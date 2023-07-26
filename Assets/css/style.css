@@ -1,6 +1,6 @@
 /* hero section */
 .grid-container .cell.medium-12 {
-    background-color: #f184b9; /* Background color for the hero section */
+    background-image: linear-gradient(to bottom, #f44295, #7b7be6);
     text-align: center; /* Center the h1 element within the hero section */
     justify-content: center;
     border: #14ce3f;
@@ -28,7 +28,7 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
-    background-color: #f8f8f8;
+    background-image: linear-gradient(to bottom, #ff0000, #0000ff);
   }
   
   /* Optional: Center the content within each box */

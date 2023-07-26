@@ -12,6 +12,14 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function to fetch weather data from the OpenWeather API
   function fetchWeatherData(cityName) {
     console.log("Fetching weather data for:", cityName);
+
+    if (!cityName.trim()) {
+        // Check if the city name is empty or contains only whitespace characters, experimenting with console.error instead of log
+        console.error("Empty city name. Please enter a valid city name.");
+        weatherForecastDiv.textContent = "Please enter a valid city name.";
+        return;
+      }
+
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${WeatherPsychicAppKey}&units=imperial`;
 
     fetch(apiUrl)
@@ -116,6 +124,7 @@ function displayFiveDayForecast(forecastList) { // Accept forecastList as an arg
           date: formatDate(date),
           minTemp: forecast.main.temp_min,
           maxTemp: forecast.main.temp_max,
+          humidity: forecast.main.humidity,
           weatherDescription: forecast.weather[0].description,
           iconCode: forecast.weather[0].icon,
           windSpeed: forecast.wind.speed,
@@ -139,10 +148,11 @@ function displayFiveDayForecast(forecastList) { // Accept forecastList as an arg
       dayDiv.classList.add("day-forecast");
 
       dayDiv.innerHTML = `
-        <p>Date: ${day.date}</p>
+        <p>${day.date}</p>
         <p>Wind Speed: ${day.windSpeed} mph</p>
         <p>Description: ${day.weatherDescription}</p>
         <p>Max Temperature: ${day.maxTemp.toFixed(2)} °F</p>
+        <p>Humidity: ${day.humidity}%</p>
         <img src="${iconUrl}" alt="Weather Icon">
       `;
 

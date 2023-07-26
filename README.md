@@ -47,4 +47,4 @@ THEN I am presented with current and future conditions for that city.
 
 - [This full-stack blog](https://coding-boot-camp.github.io/full-stack/apis/how-to-use-api-keys) on how to use API keys was informative.
 
-- It is your responsibility to include a note in the README section of your repo specifying code source and its location within your repo.
+- I also began experimenting with the CSS framework my project cohorts and I chose to use for our current group project in order to better aquaint myself with how it works. So, in this application you will also see me using [Foundation](https://get.foundation/) for some of the css styling. I linked to Foundation using a CDN link in my html. 
