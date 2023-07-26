@@ -66,47 +66,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
   
   // Function to fetch 5-day weather forecast data from the OpenWeather API
+  //  created async function with my tutor to replace a .then code 
   async function fetchFiveDayForecast(cityName) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${WeatherPsychicAppKey}&units=imperial`;
-
-   const response = await fetch(apiUrl)
-        if (!response.ok) {
-          throw new Error("City not found. Please check your spelling and try again.");
-        }
-       const data = await response.json();
-
-        displayFiveDayForecast(data);
-    
+  
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error("City not found. Please check your spelling and try again.");
+    }
+    const data = await response.json();
+  
+    // Get the list of weather data for the next 5 days (excluding today)
+    const forecastList = data.list.filter(forecast => {
+      const date = new Date(forecast.dt * 1000);
+      const today = new Date();
+      return date.getDate() !== today.getDate(); // Filter out today's forecast
+    });
+  
+    displayFiveDayForecast(forecastList); // Pass forecastList as an argument
   }
-//  created the above async function with my tutor to replace the .then code below
-// Function to fetch 5-day weather forecast data from the OpenWeather API
-//   function fetchFiveDayForecast(cityName) {
-//     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${WeatherPsychicAppKey}&units=imperial`;
 
-//     fetch(apiUrl)
-//       .then(response => {
-//         if (!response.ok) {
-//           throw new Error("City not found. Please check your spelling and try again.");
-//         }
-//         return response.json();
-//       })
-//       .then(data => {
-//         console.log("5-day forecast data fetched successfully:", data);
-//         displayFiveDayForecast(data);
-//       })
-//       .catch(error => {
-//         console.error("Error fetching 5-day forecast data:", error);
-//         fiveDayForecastDiv.textContent = error.message;
-//       });
-//   }
-
-  // Function to display the 5-day weather forecast
-  function displayFiveDayForecast(data) {
+// Function to display the 5-day weather forecast
+function displayFiveDayForecast(forecastList) { // Accept forecastList as an argument
     // Clear the previous 5-day forecast data
     fiveDayForecastDiv.innerHTML = "";
-
-    // Get the list of weather data for the next 5 days (every 3 hours)
-    const forecastList = data.list;
+  
+    if (!Array.isArray(forecastList)) {
+      console.error("Invalid forecast data. Expected an array.");
+      return;
+    }
+  
+    if (forecastList.length === 0) {
+      // Display a message when there is no data for the next 5 days
+      fiveDayForecastDiv.textContent = "No 5-day forecast data available.";
+      return;
+    }
 
     // Create an array to store 5-day weather data
     const fiveDayWeather = [];
@@ -177,6 +171,7 @@ function formatDate(dateString) {
       searchHistoryList.appendChild(listItem);
   
       // Save the search history to localStorage
+      // make sure it does not repeat upon reload
       const searchHistory = getSearchHistory();
       if (searchHistory.indexOf(cityName) === -1){
         searchHistory.push(cityName);

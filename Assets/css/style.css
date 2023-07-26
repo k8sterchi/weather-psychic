@@ -17,3 +17,33 @@
 #searchHistory .search-history-item {
     cursor: pointer;
   }
+
+  /* Add some spacing between each day's forecast */
+.day-forecast {
+    margin-bottom: 20px;
+  }
+  
+  /* Add border and background color to each day's forecast */
+  .day-forecast {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f8f8f8;
+  }
+  
+  /* Optional: Center the content within each box */
+  .day-forecast p,
+  .day-forecast img {
+    text-align: center;
+  }
+  
+  /* Optional: Style the heading with larger font and bold */
+  .day-forecast h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  
+  
+  
+  
