@@ -20,14 +20,16 @@
     </div>
 
     <div class="grid-x">
-      <!-- Left Side: Form Input -->
-      <div class="cell medium-4 form-container">
-        <h2>Where do you want to go?</h2>
-        <form id="weatherForm">
-          <input type="text" id="cityInput" name="city" placeholder="Enter city name">
-          <button type="submit" class="button">Get Weather</button>
-        </form>
-      </div>
+<!-- Left Side: Form Input -->
+<div class="cell medium-4 form-container">
+    <h2>Where do you want to go?</h2>
+    <form id="weatherForm">
+      <input type="text" id="cityInput" name="city" placeholder="Enter city name">
+      <button type="submit" class="button">Get Weather</button>
+    </form>
+    <!-- Search history list will be displayed here -->
+    <ul id="searchHistory" class="cursor-pointer"></ul>
+  </div>
       
       <!-- Right Side: Weather Dashboard -->
       <div class="cell medium-8 weather-info-container">

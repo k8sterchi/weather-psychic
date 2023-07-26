@@ -2,8 +2,89 @@ document.addEventListener("DOMContentLoaded", function () {
     const weatherForm = document.getElementById("weatherForm");
     const cityInput = document.getElementById("cityInput");
     const weatherForecastDiv = document.getElementById("weatherForecast");
-    const WeatherPsychicAppKey = 'd72fd408c6d82ddc85880d6e8ae64a2b'; 
+    const searchHistoryList = document.getElementById("searchHistory");
+    const WeatherPsychicAppKey = 'd72fd408c6d82ddc85880d6e8ae64a2b';
   
+    // Function to fetch weather data from the OpenWeather API
+    function fetchWeatherData(cityName) {
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${WeatherPsychicAppKey}`;
+  
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          // Extract relevant weather information
+          const city = data.name;
+          const weatherDescription = data.weather[0].description;
+          const temperature = data.main.temp;
+          const humidity = data.main.humidity;
+  
+          // Get today's date
+          const today = new Date();
+          const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+          const formattedDate = today.toLocaleDateString('en-US', options);
+  
+          // Get the weather icon URL
+          const iconCode = data.weather[0].icon;
+          const iconUrl = `https://openweathermap.org/img/w/${iconCode}.png`;
+  
+          // Update the HTML with the weather information
+          weatherForecastDiv.innerHTML = `
+            <h3>Weather in ${city}</h3>
+            <p>Date: ${formattedDate}</p>
+            <p>Description: ${weatherDescription}</p>
+            <p>Temperature: ${temperature} °C</p>
+            <p>Humidity: ${humidity}%</p>
+            <img src="${iconUrl}" alt="Weather Icon">
+          `;
+  
+          // Add the searched city to the search history list
+          addToSearchHistory(city);
+        })
+        .catch(error => {
+          console.error("Error fetching weather data:", error);
+          weatherForecastDiv.textContent = "Error fetching weather data.";
+        });
+    }
+  
+    // Function to add the searched city to the search history list and localStorage
+    function addToSearchHistory(cityName) {
+      const listItem = document.createElement("li");
+      listItem.textContent = cityName;
+      listItem.classList.add("search-history-item");
+  
+      // Add a click event listener to the search history item
+      listItem.addEventListener("click", function () {
+        cityInput.value = cityName;
+        fetchWeatherData(cityName);
+      });
+  
+      searchHistoryList.appendChild(listItem);
+  
+      // Save the search history to localStorage
+      const searchHistory = getSearchHistory();
+      searchHistory.push(cityName);
+      localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+    }
+  
+    // Function to get the search history from localStorage
+    function getSearchHistory() {
+      const searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+      return searchHistory;
+    }
+  
+    // Function to display the search history on page load
+    function displaySearchHistory() {
+      const searchHistory = getSearchHistory();
+  
+      searchHistoryList.innerHTML = ""; // Clear the previous list items
+  
+      // Add each searched city to the search history list
+      for (const city of searchHistory) {
+        addToSearchHistory(city);
+      }
+    }
+  
+    // Add an event listener for form submission
     weatherForm.addEventListener("submit", function (event) {
       event.preventDefault(); // Prevent form submission from refreshing the page
   
@@ -12,47 +93,14 @@ document.addEventListener("DOMContentLoaded", function () {
   
       if (cityNameInput === "") {
         // Show an error message if the city name is empty
-        console.log("User submitted empty input.");
+        console.log("Please enter a city name.");
         weatherForecastDiv.textContent = "Please enter a city name.";
       } else {
-        // Log the city name to the console
-      console.log("City Name:", cityNameInput);
-      
-        // Proceed to fetch weather data from the OpenWeather API
-        const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityNameInput}&appid=${WeatherPsychicAppKey}`;
-  
-        fetch(currentWeatherUrl)
-          .then(response => response.json())
-          .then(data => {
-            // relevant weather information
-            const city = data.name;
-            const weatherDescription = data.weather[0].description;
-            const temperature = data.main.temp;
-            const humidity = data.main.humidity;
-  
-            // Get today's date
-            const today = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const formattedDate = today.toLocaleDateString('en-US', options);
-  
-            // Get the weather icon URL
-            const iconCode = data.weather[0].icon;
-            const iconUrl = `https://openweathermap.org/img/w/${iconCode}.png`;
-  
-            // Update the HTML with the weather information
-            weatherForecastDiv.innerHTML = `
-              <h3>Weather in ${city}</h3>
-              <p>Date: ${formattedDate}</p>
-              <p>Description: ${weatherDescription}</p>
-              <p>Temperature: ${temperature} °C</p>
-              <p>Humidity: ${humidity}%</p>
-              <img src="${iconUrl}" alt="Weather Icon">
-            `;
-          })
-          .catch(error => {
-            console.error("Error fetching weather data:", error);
-            weatherForecastDiv.textContent = "Error fetching weather data.";
-          });
+        // Fetch weather data for the searched city
+        fetchWeatherData(cityNameInput);
       }
     });
+  
+    // Display the search history on page load
+    displaySearchHistory();
   });
