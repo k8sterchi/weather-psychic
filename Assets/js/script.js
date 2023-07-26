@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch(error => {
         console.error("Error fetching weather data:", error);
-        weatherForecastDiv.textContent = "Error fetching weather data.";
+        weatherForecastDiv.textContent = "City not found. Please check your spelling and try again.";
       });
   }
 
