@@ -30,7 +30,7 @@ WHEN I click on a city in the search history,
 
 THEN I am presented with current and future conditions for that city. 
 
-![Preview of application](./Assets/images/WeatherApp_Preview.png)
+![Preview of application](./Assets/images/WeatherApp_preview.png)
 
 ## Resources:
 
