@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const weatherDescription = data.weather[0].description;
         const temperature = data.main.temp;
         const humidity = data.main.humidity;
+        const windSpeed = data.wind.speed;
 
         // Get today's date
         const today = new Date();
@@ -40,12 +41,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Update the HTML with the weather information
         weatherForecastDiv.innerHTML = `
-          <h3>Weather in ${city}</h3>
+          <h3>Today in ${city} <img src="${iconUrl}" alt="Weather Icon"></h3>
           <p>Date: ${formattedDate}</p>
           <p>Description: ${weatherDescription}</p>
           <p>Temperature: ${temperature} °F</p>
           <p>Humidity: ${humidity}%</p>
-          <img src="${iconUrl}" alt="Weather Icon">
+          <p>Wind Speed: ${windSpeed} mph</p>
+          
         `;
 
         // Fetch the 5-day weather forecast for the searched city
@@ -76,7 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
         displayFiveDayForecast(data);
     
   }
-//   // Function to fetch 5-day weather forecast data from the OpenWeather API
+//  created the above async function with my tutor to replace the .then code below
+// Function to fetch 5-day weather forecast data from the OpenWeather API
 //   function fetchFiveDayForecast(cityName) {
 //     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${WeatherPsychicAppKey}&units=imperial`;
 
@@ -96,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //         fiveDayForecastDiv.textContent = error.message;
 //       });
 //   }
+
   // Function to display the 5-day weather forecast
   function displayFiveDayForecast(data) {
     // Clear the previous 5-day forecast data
@@ -108,17 +112,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const fiveDayWeather = [];
 
     // Loop through the forecast list and group weather data by date
+    // learned from tutor that this for of loop was adapted from python
     for (const forecast of forecastList) {
-      const date = forecast.dt_txt.split(" ")[0];
-      const existingDay = fiveDayWeather.find(item => item.date === date);
+      const date = new Date(forecast.dt * 1000); // Convert the UNIX timestamp to milliseconds and create a Date object
+      const existingDay = fiveDayWeather.find(item => item.date === formatDate(date));
 
       if (!existingDay) {
         fiveDayWeather.push({
-          date: date,
+          date: formatDate(date),
           minTemp: forecast.main.temp_min,
           maxTemp: forecast.main.temp_max,
           weatherDescription: forecast.weather[0].description,
           iconCode: forecast.weather[0].icon,
+          windSpeed: forecast.wind.speed,
         });
       } else {
         if (forecast.main.temp_min < existingDay.minTemp) {
@@ -140,14 +146,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
       dayDiv.innerHTML = `
         <p>Date: ${day.date}</p>
+        <p>Wind Speed: ${day.windSpeed} mph</p>
         <p>Description: ${day.weatherDescription}</p>
-        <p>
         <p>Max Temperature: ${day.maxTemp.toFixed(2)} °F</p>
         <img src="${iconUrl}" alt="Weather Icon">
       `;
 
       fiveDayForecastDiv.appendChild(dayDiv);
     }
+  }
+  // Function to format the date as "Day of the Week, Month Day, Year"
+function formatDate(dateString) {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", options);
   }
   
     // Function to add the searched city to the search history list and localStorage
