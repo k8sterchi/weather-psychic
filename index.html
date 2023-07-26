@@ -19,33 +19,34 @@
       </div>
     </div>
 
-    <!-- Left Side: Form Input -->
-<div class="cell medium-4">
-    <h2>Where do you want to go?</h2>
-    <form id="weatherForm">
-      <input type="text" id="cityInput" name="city" placeholder="Enter city name">
-      <button type="submit" class="button">Get Weather</button>
-    </form>
-  </div>
-
-     <!-- Right Side: Weather Dashboard -->
-<div class="cell medium-8">
-    <div id="weatherForecast">
-      <!-- Weather information will be displayed here dynamically -->
+    <div class="grid-x">
+      <!-- Left Side: Form Input -->
+      <div class="cell medium-4 form-container">
+        <h2>Where do you want to go?</h2>
+        <form id="weatherForm">
+          <input type="text" id="cityInput" name="city" placeholder="Enter city name">
+          <button type="submit" class="button">Get Weather</button>
+        </form>
+      </div>
+      
+      <!-- Right Side: Weather Dashboard -->
+      <div class="cell medium-8 weather-info-container">
+        <div id="weatherForecast">
+          <!-- Weather information will be displayed here dynamically -->
+        </div>
+      </div>
     </div>
   </div>
+
   <!-- Load jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Load Foundation -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.6.3/js/foundation.min.js"></script>
-<!-- My custom JavaScript -->
-<script src="./Assets/js/script.js"></script>
-<!--  jQuery initializes the Foundation framework on the entire document -->
-<script>
-  $(document).foundation(); 
-</script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Load Foundation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.6.3/js/foundation.min.js"></script>
+  <!-- My custom JavaScript -->
+  <script src="./Assets/js/script.js"></script>
+  <!--  jQuery initializes the Foundation framework on the entire document -->
+  <script>
+    $(document).foundation(); 
+  </script>
 </body>
-
-
-
-   
+</html>
