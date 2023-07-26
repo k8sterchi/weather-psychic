@@ -12,8 +12,12 @@ document.addEventListener("DOMContentLoaded", function () {
   
       if (cityNameInput === "") {
         // Show an error message if the city name is empty
+        console.log("User submitted empty input.");
         weatherForecastDiv.textContent = "Please enter a city name.";
       } else {
+        // Log the city name to the console
+      console.log("City Name:", cityNameInput);
+      
         // Proceed to fetch weather data from the OpenWeather API
         const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityNameInput}&appid=${WeatherPsychicAppKey}`;
   
