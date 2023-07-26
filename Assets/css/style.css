@@ -1,0 +1,14 @@
+/* hero section */
+.grid-container .cell.medium-12 {
+    background-color: #f184b9; /* Background color for the hero section */
+    text-align: center; /* Center the h1 element within the hero section */
+    justify-content: center;
+    border: #14ce3f;
+    padding: 10px;
+  }
+  
+  /* Adjust the height of the hero section as needed */
+  .grid-container .cell.medium-12 {
+    height: 100%;
+    width: 100%;
+  }

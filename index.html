@@ -11,23 +11,30 @@
 </head>
 <body>
   <div class="grid-container">
-    <div class="grid-x">
-      <!-- Left Side: Form Input -->
-      <div class="cell medium-4">
-        <h2>Where do you want to go?</h2>
-        <form id="weatherForm">
-          <input type="text" name="city" placeholder="Enter city name">
-          <button type="submit" class="button">Get Weather</button>
-        </form>
+    <!-- Hero Section with H1 and Image -->
+    <div class="grid-x grid-padding-x hero-section">
+      <div class="cell medium-12">
+        <h1>Weather Psychic</h1>
+        <!-- Add hero image here or use background image CSS -->
       </div>
-      
-      <!-- Right Side: Weather Dashboard -->
-      <div class="cell medium-8">
-        <h1>Weather Dashboard</h1>
+    </div>
+
+    <div class="grid-x grid-padding-x">
+      <!-- Left Side: Weather Dashboard -->
+      <div class="cell medium-8 medium-order-2">
         <!-- Add other weather information elements here -->
         <div id="weatherInfo">
           <!-- Weather information will be displayed here dynamically -->
         </div>
+      </div>
+
+      <!-- Right Side: Form Input -->
+      <div class="cell medium-4 medium-order-1">
+        <h2>Where would you like to go?</h2>
+        <form id="weatherForm">
+          <input type="text" name="city" placeholder="Enter city name">
+          <button type="submit" class="button">Get Weather</button>
+        </form>
       </div>
     </div>
   </div>
