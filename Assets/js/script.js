@@ -1,63 +1,54 @@
-const WeatherPsychicAppKey = 'd72fd408c6d82ddc85880d6e8ae64a2b';
-
-
-document.addEventListener("DOMContentLoaded", function () {
-  // Get the form element
-  const weatherForm = document.getElementById("weatherForm");
-
-  // Add an event listener for form submission
-  weatherForm.addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent form submission from refreshing the page
-
-    // Get the user input (city name)
-    const cityNameInput = weatherForm.elements.city.value;
-
-    // Log the city name to the console
-    console.log("City Name:", cityNameInput);
-
-    // You can proceed to fetch weather data from the OpenWeather API here
-    // Make sure to use the cityNameInput variable in your API call
-
-    // For demonstration purposes, let's update the weatherInfo div with the city name
-    const weatherInfoDiv = document.getElementById("weatherInfo");
-    weatherInfoDiv.textContent = `Weather information for ${cityNameInput}`;
-  });
-});
-
 document.addEventListener("DOMContentLoaded", function () {
     const weatherForm = document.getElementById("weatherForm");
-    const weatherInfoDiv = document.getElementById("weatherInfo");
+    const cityInput = document.getElementById("cityInput");
+    const weatherForecastDiv = document.getElementById("weatherForecast");
+    const WeatherPsychicAppKey = 'd72fd408c6d82ddc85880d6e8ae64a2b'; 
   
     weatherForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-      const cityNameInput = weatherForm.elements.city.value;
-      const WeatherPsychicAppKey = 'd72fd408c6d82ddc85880d6e8ae64a2b'; // Replace with your actual API key
-      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityNameInput}&appid=${WeatherPsychicAppKey}`;
+      event.preventDefault(); // Prevent form submission from refreshing the page
   
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          // Process the API response to extract weather information
-          const weatherDescription = data.weather[0].description;
-          const temperature = data.main.temp;
+      // Get the user input (city name)
+      const cityNameInput = cityInput.value.trim();
   
-          // Update the HTML with the weather information
-          weatherInfoDiv.innerHTML = `
-            <h3>${cityNameInput}</h3>
-            <p>Weather: ${weatherDescription}</p>
-            <p>Temperature: ${temperature} °C</p>
-          `;
+      if (cityNameInput === "") {
+        // Show an error message if the city name is empty
+        weatherForecastDiv.textContent = "Please enter a city name.";
+      } else {
+        // Proceed to fetch weather data from the OpenWeather API
+        const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityNameInput}&appid=${WeatherPsychicAppKey}`;
   
-          // Apply dynamic styling based on weather conditions
-          if (weatherDescription.includes("rain")) {
-            weatherInfoDiv.classList.add("rainy"); // Add a CSS class for rainy weather
-          } else {
-            weatherInfoDiv.classList.remove("rainy"); // Remove the class if not rainy
-          }
-        })
-        .catch(error => {
-          console.error("Error fetching weather data:", error);
-          weatherInfoDiv.innerHTML = "Error fetching weather data.";
-        });
+        fetch(currentWeatherUrl)
+          .then(response => response.json())
+          .then(data => {
+            // relevant weather information
+            const city = data.name;
+            const weatherDescription = data.weather[0].description;
+            const temperature = data.main.temp;
+            const humidity = data.main.humidity;
+  
+            // Get today's date
+            const today = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = today.toLocaleDateString('en-US', options);
+  
+            // Get the weather icon URL
+            const iconCode = data.weather[0].icon;
+            const iconUrl = `https://openweathermap.org/img/w/${iconCode}.png`;
+  
+            // Update the HTML with the weather information
+            weatherForecastDiv.innerHTML = `
+              <h3>Weather in ${city}</h3>
+              <p>Date: ${formattedDate}</p>
+              <p>Description: ${weatherDescription}</p>
+              <p>Temperature: ${temperature} °C</p>
+              <p>Humidity: ${humidity}%</p>
+              <img src="${iconUrl}" alt="Weather Icon">
+            `;
+          })
+          .catch(error => {
+            console.error("Error fetching weather data:", error);
+            weatherForecastDiv.textContent = "Error fetching weather data.";
+          });
+      }
     });
   });
